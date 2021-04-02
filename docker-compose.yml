@@ -20,6 +20,8 @@ services:
   webserver:
     image: nginx:alpine
     container_name: webserver
+    volumes:
+      - ./nginx:/etc/nginx/conf.d/app.conf
     restart: unless-stopped
     tty: true
     ports:
@@ -28,21 +30,20 @@ services:
     networks:
       - app-network
 
-  #MySQL Service
+  #Postgres Service
   db:
-    image: mysql:5.7.22
+    image: postgres:9.5-alpine
     container_name: db
+    volumes:
+      - "./postgres:/var/lib/postgresql/data"
     restart: unless-stopped
     tty: true
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MYSQL_DATABASE: shopping-cart
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+      POSTGRES_DB: shopping-cart
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
     networks:
       - app-network
 
