@@ -3,6 +3,7 @@
 use Illuminate\Support\Str;
 
 $DATABASE_URL = parse_url('postgres://jwkoluoredvnph:c11a079c89f600ae426d9e128768f82de4a89b0b0a2f8d5b4da79da16f704873@ec2-52-71-161-140.compute-1.amazonaws.com:5432/dc58d35089p9h5');
+$DATABASE_STAGING_URL = parse_url('postgres://zpfhedtapnasts:993271254c00c4ef03f22b2e545010d10b5178106a9988bd43f1818f4d91d4b7@ec2-3-217-219-146.compute-1.amazonaws.com:5432/d7iqk7o513pmqu');
 
 return [
 
@@ -64,20 +65,35 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-
+        //Staging db
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => $DATABASE_URL["host"],
-            'port' => $DATABASE_URL["port"],
-            'database' => ltrim($DATABASE_URL["path"], "/"),
-            'username' => $DATABASE_URL["user"],
-            'password' => $DATABASE_URL["pass"],
+            'host' => $DATABASE_STAGING_URL["host"],
+            'port' => $DATABASE_STAGING_URL["port"],
+            'database' => ltrim($DATABASE_STAGING_URL["path"], "/"),
+            'username' => $DATABASE_STAGING_URL["user"],
+            'password' => $DATABASE_STAGING_URL["pass"],
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+
+        //Uncomment for prod db
+        // 'pgsql' => [
+        //     'driver' => 'pgsql',
+        //     'host' => $DATABASE_URL["host"],
+        //     'port' => $DATABASE_URL["port"],
+        //     'database' => ltrim($DATABASE_URL["path"], "/"),
+        //     'username' => $DATABASE_URL["user"],
+        //     'password' => $DATABASE_URL["pass"],
+        //     'charset' => 'utf8',
+        //     'prefix' => '',
+        //     'prefix_indexes' => true,
+        //     'schema' => 'public',
+        //     'sslmode' => 'prefer',
+        // ],
 
         //Uncomment for local development
         // 'pgsql' => [
