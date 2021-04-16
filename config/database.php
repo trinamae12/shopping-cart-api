@@ -18,7 +18,7 @@ if(env('APP_ENV') === 'local') {
     $port = $DB_URL["port"];
     $database = ltrim($DB_URL["path"], "/");
     $username = $DB_URL["user"];
-    $password = $DATABASE_URL["pass"];
+    $password = $DB_URL["pass"];
 }
 
 return [
