@@ -81,7 +81,7 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-        //Staging db
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' =>  $host,
