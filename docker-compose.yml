@@ -21,7 +21,7 @@ services:
     image: nginx:alpine
     container_name: webserver
     volumes:
-      - ./nginx:/etc/nginx/conf.d/app.conf
+      - ./sourcefiles/nginx:/etc/nginx/conf.d
     restart: unless-stopped
     tty: true
     ports:
