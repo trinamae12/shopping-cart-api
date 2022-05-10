@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SellerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,13 +25,27 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('login', [ApiController::class, 'login']);
-// Route::post('register','ApiController@register');
 Route::post('users', [UserController::class, 'store']);
 
 Route::group(['middleware' => 'auth:api'], function(){
     Route::get('get-details', [ApiController::class, 'getDetails']);
+
+    //Admin routes
+    Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
+        Route::get('/', [AdminController::class, 'index']);
+        Route::get('users', [UserController::class, 'index']);
+    });
+
+    //Seller routes
+    Route::group(['prefix'=>'seller', 'middleware'=>'seller'], function(){
+        Route::get('/', [SellerController::class, 'index']);
+    });
+
+    //Customer routes
+    Route::group(['prefix'=>'customer', 'middleware'=>'customer'], function(){
+        Route::get('/', [CustomerController::class, 'index']);
+    });
+
     Route::get('logout', [ApiController::class, 'logout']);
 });
-
-Route::get('users', [UserController::class, 'index']);
 

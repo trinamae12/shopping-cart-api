@@ -18,6 +18,7 @@ class ApiController extends Controller
    public function login(){
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
             $user = Auth::user();
+            $success['roleId'] = Auth::user()->role_id;
             $success['token'] =  $user->createToken('MyApp')->accessToken;
             return response()->json(['success' => $success], $this->successStatus);
         }
@@ -25,30 +26,6 @@ class ApiController extends Controller
             return response()->json(['error'=>'Unauthorised'], 401);
         }
     }
-
-    /**
-    * Register api
-    *
-    * @return \Illuminate\Http\Response
-    */
-//    public function register(Request $request)
-//    {
-//        $validator = Validator::make($request->all(), [
-//            'name' => 'required',
-//            'email' => 'required|email',
-//            'password' => 'required',
-//            'c_password' => 'required|same:password',
-//        ]);
-//        if ($validator->fails()) {
-//            return response()->json(['error'=>$validator->errors()], 401);            
-//        }
-//        $input = $request->all();
-//        $input['password'] = bcrypt($input['password']);
-//        $user = User::create($input);
-//        $success['token'] =  $user->createToken('MyApp')->accessToken;
-//        $success['name'] =  $user->name;
-//        return response()->json(['success'=>$success], $this->successStatus);
-//    }
 
     /**
     * details api
@@ -71,7 +48,7 @@ class ApiController extends Controller
         if (Auth::check()) {
             $token = Auth::user()->token();
             $token->revoke();
-            return response()->json("Logged out");
+            return response()->json(['status'=>'Logged out'], $this->successStatus);
         } 
         else{ 
             return response()->json(['error'=>'Unauthorised'], 401);
