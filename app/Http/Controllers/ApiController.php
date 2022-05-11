@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
+use App\Http\Requests\LoginRequest;
+
 class ApiController extends Controller
 {
     public $successStatus = 200;
@@ -15,7 +17,7 @@ class ApiController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-   public function login(){
+   public function login(LoginRequest $request){
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
             $user = Auth::user();
             $success['roleId'] = Auth::user()->role_id;
@@ -23,7 +25,7 @@ class ApiController extends Controller
             return response()->json(['success' => $success], $this->successStatus);
         }
         else{
-            return response()->json(['error'=>'Unauthorised'], 401);
+            return response()->json(['error'=>'Email or password is incorrect. Please try again.'], 401);
         }
     }
 
