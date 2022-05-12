@@ -46,6 +46,6 @@ Route::group(['middleware' => 'auth:api'], function(){
         Route::get('/', [CustomerController::class, 'index']);
     });
 
-    Route::get('logout', [ApiController::class, 'logout']);
+    Route::delete('logout', [ApiController::class, 'logout']);
 });
 

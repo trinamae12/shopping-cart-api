@@ -63,4 +63,42 @@ class ApiControllerTest extends TestCase
 
         $user->delete();
     }
+
+    /**
+     * Test successful logout
+     *
+     * @return void
+     */
+    public function test_logout()
+    {
+        $user = User::create([
+            'name' => 'sample',
+            'email' => 'sample@test.com',
+            'password' => bcrypt('sample123'),
+            'role_id' => 1
+        ]);
+
+        $response = $this->json(
+            'POST',
+            '/oauth/token',
+            [
+                'client_id' => 2,
+                'client_secret' => 'BkfldztBE3EiYq5oAX6hVln5DQTsw9B79T5LwDYD',
+                'grant_type' => 'password',
+                'username' => 'sample@test.com',
+                'password' => 'sample123'
+            ]
+        );
+        $response->assertStatus(200);
+        $result = json_decode((string) $response->getContent());
+        $accessToken = $result->access_token;
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])
+        ->json('DELETE', 'api/logout');
+        $response->assertStatus(200)
+            ->assertJsonStructure(["status"]);
+        $user->delete();
+    }
 }
